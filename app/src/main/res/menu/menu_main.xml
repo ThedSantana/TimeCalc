@@ -3,8 +3,14 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.example.clindeqeuist.timecalculator.MainActivity">
     <item
-        android:id="@+id/action_settings"
+        android:title="@string/action_clear"
         android:orderInCategory="100"
+        android:id="@+id/action_clear"
+        />
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="101"
         android:title="@string/action_settings"
-        app:showAsAction="never"/>
+        app:showAsAction="never"
+        android:enabled="false"/>
 </menu>

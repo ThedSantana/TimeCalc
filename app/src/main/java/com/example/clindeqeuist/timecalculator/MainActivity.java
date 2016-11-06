@@ -2,6 +2,7 @@ package com.example.clindeqeuist.timecalculator;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -15,7 +16,10 @@ import com.example.clindeqeuist.timecalculator.model.EntryCollection;
 public class MainActivity extends AppCompatActivity
 {
 
+    public static final String ENTRIES_FILENAME = "entries.xml";
+
     private EntryCollection entries = new EntryCollection();
+    private ArrayAdapter<String> entriesAdapter;
 
 
     @Override
@@ -26,11 +30,11 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        entries.loadEntries("entries.xml", getApplicationContext());
+        entries.loadEntries(ENTRIES_FILENAME, getApplicationContext());
         ListView listView = (ListView) findViewById(R.id.list);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(listView.getContext(),
+        entriesAdapter = new ArrayAdapter<>(listView.getContext(),
                 android.R.layout.simple_list_item_1, entries.getEntries());
-        listView.setAdapter(adapter);
+        listView.setAdapter(entriesAdapter);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener()
@@ -38,14 +42,12 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-
                 ListView listView = (ListView) findViewById(R.id.list);
                 ArrayAdapter adapter = (ArrayAdapter) listView.getAdapter();
                 entries.getEntries().add("Entry " + Integer.toString(adapter.getCount() + 1));
-                entries.saveEntries("entries.xml", getApplicationContext());
+                entries.saveEntries(ENTRIES_FILENAME, getApplicationContext());
                 adapter.notifyDataSetChanged();
+                listView.smoothScrollToPosition(entries.getEntries().size() - 1);
             }
         });
     }
@@ -68,8 +70,18 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings)
+        if (id == R.id.action_clear)
+        {
+            entries.getEntries().clear();
+            entries.saveEntries(ENTRIES_FILENAME, getApplicationContext());
+            entriesAdapter.notifyDataSetChanged();
+
+            Snackbar.make(findViewById(R.id.activity_main), "Entries cleared", Snackbar.LENGTH_SHORT)
+                    .setAction("Action", null).show();
+
+            return true;
+        }
+        else if (id == R.id.action_settings)
         {
             return true;
         }

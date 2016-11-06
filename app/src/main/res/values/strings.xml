@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Time Calculator</string>
+    <string name="action_clear">Clear</string>
     <string name="action_settings">Settings</string>
 </resources>
