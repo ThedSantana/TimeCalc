@@ -10,13 +10,12 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.example.clindeqeuist.timecalculator.model.EntryCollection;
 
 public class MainActivity extends AppCompatActivity
 {
 
-    private List<String> entries = new ArrayList<>();
+    private EntryCollection entries = new EntryCollection();
 
 
     @Override
@@ -27,12 +26,10 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        entries.add("First");
-        entries.add("Second");
-        entries.add("Third");
+        entries.loadEntries("entries.xml", getApplicationContext());
         ListView listView = (ListView) findViewById(R.id.list);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(listView.getContext(),
-                android.R.layout.simple_list_item_1, entries);
+                android.R.layout.simple_list_item_1, entries.getEntries());
         listView.setAdapter(adapter);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -46,11 +43,13 @@ public class MainActivity extends AppCompatActivity
 
                 ListView listView = (ListView) findViewById(R.id.list);
                 ArrayAdapter adapter = (ArrayAdapter) listView.getAdapter();
-                entries.add("Entry " + Integer.toString(adapter.getCount() + 1));
+                entries.getEntries().add("Entry " + Integer.toString(adapter.getCount() + 1));
+                entries.saveEntries("entries.xml", getApplicationContext());
                 adapter.notifyDataSetChanged();
             }
         });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -59,6 +58,7 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
@@ -76,4 +76,5 @@ public class MainActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+
 }
