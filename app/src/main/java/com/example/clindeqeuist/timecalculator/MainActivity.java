@@ -7,7 +7,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.clindeqeuist.timecalculator.adapters.EntryCollectionAdapter;
 import com.example.clindeqeuist.timecalculator.model.Entry;
@@ -34,6 +36,17 @@ public class MainActivity extends AppCompatActivity
         entries.loadEntries(ENTRIES_FILENAME, getApplicationContext());
         entriesAdapter = new EntryCollectionAdapter(listView.getContext(), entries);
         listView.setAdapter(entriesAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                removeEntry(position);
+            }
+        });
+
+        updateResultView();
     }
 
 
@@ -97,10 +110,25 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    private void removeEntry(int index)
+    {
+        entries.getEntries().remove(index);
+        saveEntriesAndNotifyChanged();
+    }
+
+
     private void saveEntriesAndNotifyChanged()
     {
         entries.saveEntries(ENTRIES_FILENAME, getApplicationContext());
         entriesAdapter.notifyDataSetChanged();
+        updateResultView();
+    }
+
+
+    private void updateResultView()
+    {
+        TextView resultView = (TextView) findViewById(R.id.result);
+        resultView.setText(Integer.toString(entries.getEntries().size()));
     }
 
 }

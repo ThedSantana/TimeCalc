@@ -2,11 +2,14 @@
 * Add menu action for clearing list
 * Use proper add icon for floating action button
 
-o Look into creating a custom layout for list view items
-o Look into custom adapter for list view
+* Look into creating a custom layout for list view items
+* Look into custom adapter for list view
 
-o Refactor EntryCollection to use Entry for items
+* Refactor EntryCollection to use Entry for items
 
-- Update topmost label with entry count
+* Update topmost label with entry count
+* Delete entry when clicked
+
+- Figure out how to swipe list items to delete them
 
 - Consider using JSON (Gson) for data storage (simplifies serialization) - or any alternatives?
