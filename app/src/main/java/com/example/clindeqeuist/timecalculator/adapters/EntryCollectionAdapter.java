@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.clindeqeuist.timecalculator.R;
+import com.example.clindeqeuist.timecalculator.model.Entry;
 import com.example.clindeqeuist.timecalculator.model.EntryCollection;
 
 public class EntryCollectionAdapter extends BaseAdapter
@@ -48,16 +49,23 @@ public class EntryCollectionAdapter extends BaseAdapter
     @Override
     public View getView(int i, View view, ViewGroup viewGroup)
     {
+        Entry entry = entries.getEntries().get(i);
+
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.entry_layout, viewGroup, false);
+        View entryView = inflater.inflate(R.layout.entry_layout, viewGroup, false);
 
-        TextView label = (TextView) rowView.findViewById(R.id.label);
-        label.setText(entries.getEntries().get(i));
+        TextView descriptionLabel = (TextView) entryView.findViewById(R.id.description);
+        descriptionLabel.setText(entry.getDescription());
 
-        TextView dummy = (TextView) rowView.findViewById(R.id.dummy);
-        dummy.setText("Second dummy label...");
+        TextView valueLabel = (TextView) entryView.findViewById(R.id.value);
+        String value;
+        if (entry.getValue() == null)
+            value = "No value";
+        else
+            value = Integer.toString(entry.getValue());
+        valueLabel.setText(value);
 
-//        ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
+//        ImageView imageView = (ImageView) entryView.findViewById(R.id.icon);
 //        // change the icon for Windows and iPhone
 //        String s = values[position];
 //        if (s.startsWith("iPhone")) {
@@ -66,7 +74,7 @@ public class EntryCollectionAdapter extends BaseAdapter
 //            imageView.setImageResource(R.drawable.ok);
 //        }
 
-        return rowView;
+        return entryView;
     }
 
 }

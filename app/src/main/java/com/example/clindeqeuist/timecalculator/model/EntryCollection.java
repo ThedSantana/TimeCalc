@@ -30,12 +30,10 @@ import javax.xml.xpath.XPathFactory;
 public class EntryCollection
 {
 
-    // FIXME: Should use Entry instead of String, but that requires a custom adapter etc. for the
-    //        list, so for now we just use String
-    private List<String> entries = new ArrayList<>();
+    private List<Entry> entries = new ArrayList<>();
 
 
-    public List<String> getEntries()
+    public List<Entry> getEntries()
     {
         return entries;
     }
@@ -52,10 +50,11 @@ public class EntryCollection
             Element entriesElement = document.createElement("entries");
             document.appendChild(entriesElement);
 
-            for (String entry : entries)
+            for (Entry entry : entries)
             {
+                // TODO: Add support for description and value
                 Element entryElement = document.createElement("entry");
-                entryElement.setTextContent(entry);
+                entryElement.setTextContent(entry.getDescription());
                 entriesElement.appendChild(entryElement);
             }
 
@@ -100,9 +99,10 @@ public class EntryCollection
 
             for (int i = 0; i < entryNodes.getLength(); ++i)
             {
+                // TODO: Add support for description and value
                 String nodeValue = entryNodes.item(i).getNodeValue();
                 if (nodeValue != null)
-                    entries.add(nodeValue);
+                    entries.add(new Entry(nodeValue, null));
             }
         }
         catch (ParserConfigurationException | SAXException | IOException | XPathExpressionException e)

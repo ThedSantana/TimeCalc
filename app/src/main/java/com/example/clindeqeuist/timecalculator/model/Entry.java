@@ -3,22 +3,36 @@ package com.example.clindeqeuist.timecalculator.model;
 public class Entry
 {
 
-    private String value;
+    private String description;
+    private Integer value;
 
 
-    public Entry(String value)
+    public Entry(String description, Integer value)
     {
+        this.description = description;
         this.value = value;
     }
 
 
-    public String getValue()
+    public String getDescription()
+    {
+        return description;
+    }
+
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
+
+    public Integer getValue()
     {
         return value;
     }
 
 
-    public void setValue(String value)
+    public void setValue(Integer value)
     {
         this.value = value;
     }

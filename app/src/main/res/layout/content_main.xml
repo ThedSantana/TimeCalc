@@ -22,7 +22,8 @@
         android:layout_marginStart="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_width="0dp"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <ListView
         android:layout_width="0dp"

@@ -9,15 +9,16 @@
               android:minHeight="?android:attr/listPreferredItemHeight">
 
     <TextView
-        android:id="@+id/label"
+        android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceListItem" />
 
     <TextView
-        android:id="@+id/dummy"
+        android:id="@+id/value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:enabled="false"
         android:textAppearance="?android:attr/textAppearanceListItemSecondary" />
 
 </LinearLayout>

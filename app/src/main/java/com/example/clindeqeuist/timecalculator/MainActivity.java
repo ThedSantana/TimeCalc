@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.example.clindeqeuist.timecalculator.adapters.EntryCollectionAdapter;
+import com.example.clindeqeuist.timecalculator.model.Entry;
 import com.example.clindeqeuist.timecalculator.model.EntryCollection;
 
 public class MainActivity extends AppCompatActivity
@@ -85,7 +86,10 @@ public class MainActivity extends AppCompatActivity
 
     private void addNewEntry()
     {
-        entries.getEntries().add("Entry " + Integer.toString(entriesAdapter.getCount() + 1));
+        int value = entriesAdapter.getCount() + 1;
+        String description = "Entry " + Integer.toString(value);
+
+        entries.getEntries().add(new Entry(description, value));
         saveEntriesAndNotifyChanged();
 
         ListView listView = (ListView) findViewById(R.id.list);
