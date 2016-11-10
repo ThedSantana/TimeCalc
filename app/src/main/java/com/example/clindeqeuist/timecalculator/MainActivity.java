@@ -1,16 +1,15 @@
 package com.example.clindeqeuist.timecalculator;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.clindeqeuist.timecalculator.adapters.EntryCollectionAdapter;
 import com.example.clindeqeuist.timecalculator.model.EntryCollection;
 
 public class MainActivity extends AppCompatActivity
@@ -19,7 +18,7 @@ public class MainActivity extends AppCompatActivity
     public static final String ENTRIES_FILENAME = "entries.xml";
 
     private EntryCollection entries = new EntryCollection();
-    private ArrayAdapter<String> entriesAdapter;
+    private EntryCollectionAdapter entriesAdapter;
 
 
     @Override
@@ -30,26 +29,10 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        entries.loadEntries(ENTRIES_FILENAME, getApplicationContext());
         ListView listView = (ListView) findViewById(R.id.list);
-        entriesAdapter = new ArrayAdapter<>(listView.getContext(),
-                android.R.layout.simple_list_item_1, entries.getEntries());
+        entries.loadEntries(ENTRIES_FILENAME, getApplicationContext());
+        entriesAdapter = new EntryCollectionAdapter(listView.getContext(), entries);
         listView.setAdapter(entriesAdapter);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                ListView listView = (ListView) findViewById(R.id.list);
-                ArrayAdapter adapter = (ArrayAdapter) listView.getAdapter();
-                entries.getEntries().add("Entry " + Integer.toString(adapter.getCount() + 1));
-                entries.saveEntries(ENTRIES_FILENAME, getApplicationContext());
-                adapter.notifyDataSetChanged();
-                listView.smoothScrollToPosition(entries.getEntries().size() - 1);
-            }
-        });
     }
 
 
@@ -72,13 +55,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.action_clear)
         {
-            entries.getEntries().clear();
-            entries.saveEntries(ENTRIES_FILENAME, getApplicationContext());
-            entriesAdapter.notifyDataSetChanged();
-
-            Snackbar.make(findViewById(R.id.activity_main), "Entries cleared", Snackbar.LENGTH_SHORT)
-                    .setAction("Action", null).show();
-
+            clearEntries();
             return true;
         }
         else if (id == R.id.action_settings)
@@ -87,6 +64,39 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public void onAddNewEntryClicked(View view)
+    {
+        addNewEntry();
+    }
+
+
+    private void clearEntries()
+    {
+        entries.getEntries().clear();
+        saveEntriesAndNotifyChanged();
+
+        Snackbar.make(findViewById(R.id.activity_main), "Entries cleared", Snackbar.LENGTH_SHORT)
+                .show();
+    }
+
+
+    private void addNewEntry()
+    {
+        entries.getEntries().add("Entry " + Integer.toString(entriesAdapter.getCount() + 1));
+        saveEntriesAndNotifyChanged();
+
+        ListView listView = (ListView) findViewById(R.id.list);
+        listView.smoothScrollToPosition(entries.getEntries().size() - 1);
+    }
+
+
+    private void saveEntriesAndNotifyChanged()
+    {
+        entries.saveEntries(ENTRIES_FILENAME, getApplicationContext());
+        entriesAdapter.notifyDataSetChanged();
     }
 
 }

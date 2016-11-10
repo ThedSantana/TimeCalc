@@ -2,9 +2,8 @@
 * Add menu action for clearing list
 * Use proper add icon for floating action button
 
-- Look into creating a custom layout for list view items
-
-- Look into custom adapter for list view
+> Look into creating a custom layout for list view items
+> Look into custom adapter for list view
 
 - Refactor EntryCollection to use Entry for items
     - This requires a custom adapter for the list view
