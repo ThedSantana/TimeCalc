@@ -3,17 +3,20 @@ package com.example.clindeqeuist.timecalculator;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.clindeqeuist.timecalculator.adapters.EntryCollectionAdapter;
 import com.example.clindeqeuist.timecalculator.model.Entry;
 import com.example.clindeqeuist.timecalculator.model.EntryCollection;
+
+import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -32,19 +35,65 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ListView listView = (ListView) findViewById(R.id.list);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
+        recyclerView.setHasFixedSize(true);
         entries.loadEntries(ENTRIES_FILENAME, getApplicationContext());
-        entriesAdapter = new EntryCollectionAdapter(listView.getContext(), entries);
-        listView.setAdapter(entriesAdapter);
+        entriesAdapter = new EntryCollectionAdapter(recyclerView.getContext(), entries);
+        recyclerView.setAdapter(entriesAdapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        // FIXME: Clean up setup of the item touch helper
+        ItemTouchHelper.SimpleCallback itemTouchCallback = new ItemTouchHelper.SimpleCallback(
+                ItemTouchHelper.UP | ItemTouchHelper.DOWN,
+                ItemTouchHelper.START | ItemTouchHelper.END)
         {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                  RecyclerView.ViewHolder target)
             {
-                removeEntry(position);
+                int fromPosition = viewHolder.getAdapterPosition();
+                int toPosition = target.getAdapterPosition();
+
+                Collections.swap(entries.getEntries(), fromPosition, toPosition);
+                entries.saveEntries(ENTRIES_FILENAME, getApplicationContext());
+                entriesAdapter.notifyItemMoved(fromPosition, toPosition);
+
+                updateResultView();
+                return true;
             }
-        });
+
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction)
+            {
+                int position = viewHolder.getAdapterPosition();
+
+                entries.getEntries().remove(position);
+                entries.saveEntries(ENTRIES_FILENAME, getApplicationContext());
+                entriesAdapter.notifyItemRemoved(position);
+
+                updateResultView();
+            }
+
+
+            @Override
+            public boolean isLongPressDragEnabled()
+            {
+                return super.isLongPressDragEnabled();
+            }
+
+
+            @Override
+            public boolean isItemViewSwipeEnabled()
+            {
+                return super.isItemViewSwipeEnabled();
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(itemDecoration);
 
         updateResultView();
     }
@@ -99,21 +148,14 @@ public class MainActivity extends AppCompatActivity
 
     private void addNewEntry()
     {
-        int value = entriesAdapter.getCount() + 1;
+        int value = entriesAdapter.getItemCount() + 1;
         String description = "Entry " + Integer.toString(value);
 
         entries.getEntries().add(new Entry(description, value));
         saveEntriesAndNotifyChanged();
 
-        ListView listView = (ListView) findViewById(R.id.list);
-        listView.smoothScrollToPosition(entries.getEntries().size() - 1);
-    }
-
-
-    private void removeEntry(int index)
-    {
-        entries.getEntries().remove(index);
-        saveEntriesAndNotifyChanged();
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
+        recyclerView.smoothScrollToPosition(entries.getEntries().size() - 1);
     }
 
 
