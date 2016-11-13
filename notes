@@ -12,7 +12,9 @@
 
 > Figure out how to swipe list items to delete them
     * Checkout RecyclerView, see https://developer.android.com/training/material/lists-cards.html
-    - See ItemTouchHelper for swiping items
+    o See ItemTouchHelper for swiping items, https://medium.com/@ipaulpro/drag-and-swipe-with-recyclerview-b9456d2b1aaf#.9zmbm6jrp
+    - When moving items, the item is transparent, so probably the background should be set to the standard color
+    - When swiping, some background indicating that the entry is being deleted should be shown
     - Clicking items - maybe something simpler is available?
         - http://stackoverflow.com/questions/24471109/recyclerview-onclick/26196831#26196831
     - Maybe some of this is relevant for text editing within items: http://stackoverflow.com/questions/31844373/saving-edittext-content-in-recyclerview
