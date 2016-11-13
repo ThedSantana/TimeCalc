@@ -9,8 +9,8 @@
               android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
               android:paddingStart="?android:attr/listPreferredItemPaddingStart">
 
-    <ImageView
-        android:id="@+id/imageView"
+    <ImageButton
+        android:id="@+id/operator_button"
         android:layout_width="24dp"
         android:layout_height="24dp"
         app:srcCompat="@drawable/ic_add_circle"/>

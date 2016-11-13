@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.clindeqeuist.timecalculator.R;
@@ -65,14 +66,16 @@ public class EntryCollectionAdapter extends BaseAdapter
             value = Integer.toString(entry.getValue());
         valueLabel.setText(value);
 
-//        ImageView imageView = (ImageView) entryView.findViewById(R.id.icon);
-//        // change the icon for Windows and iPhone
-//        String s = values[position];
-//        if (s.startsWith("iPhone")) {
-//            imageView.setImageResource(R.drawable.no);
-//        } else {
-//            imageView.setImageResource(R.drawable.ok);
-//        }
+        // FIXME: ImageButton testing
+        final ImageButton imageButton = (ImageButton) entryView.findViewById(R.id.operator_button);
+        imageButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                imageButton.setImageResource(R.drawable.ic_remove_circle);
+            }
+        });
 
         return entryView;
     }
