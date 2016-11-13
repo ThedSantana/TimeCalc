@@ -1,80 +1,75 @@
 package com.example.clindeqeuist.timecalculator.adapters;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.clindeqeuist.timecalculator.R;
 import com.example.clindeqeuist.timecalculator.model.Entry;
 import com.example.clindeqeuist.timecalculator.model.EntryCollection;
 
-public class EntryCollectionAdapter extends BaseAdapter
+public class EntryCollectionAdapter extends RecyclerView.Adapter<EntryViewHolder>
 {
 
     private Context context;
     private EntryCollection entries;
+    private LayoutInflater inflater;
 
 
-    public EntryCollectionAdapter( Context context, EntryCollection entries)
+    public EntryCollectionAdapter(Context context, EntryCollection entries)
     {
         this.context = context;
         this.entries = entries;
+
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
 
     @Override
-    public int getCount()
+    public EntryViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        return entries.getEntries().size();
-    }
-
-
-    @Override
-    public Object getItem(int i)
-    {
-        return entries.getEntries().get(i);
-    }
-
-
-    @Override
-    public long getItemId(int i)
-    {
-        return 0;
-    }
-
-
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup)
-    {
-        Entry entry = entries.getEntries().get(i);
-
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View entryView = inflater.inflate(R.layout.entry_layout, viewGroup, false);
+        View entryView = inflater.inflate(R.layout.entry_layout, parent, false);
 
         TextView descriptionLabel = (TextView) entryView.findViewById(R.id.description);
-        descriptionLabel.setText(entry.getDescription());
-
         TextView valueLabel = (TextView) entryView.findViewById(R.id.value);
+
+        return new EntryViewHolder(entryView, descriptionLabel, valueLabel);
+    }
+
+
+    @Override
+    public void onBindViewHolder(EntryViewHolder holder, int position)
+    {
+        Entry entry = entries.getEntries().get(position);
+
+        holder.getDescriptionLabel().setText(entry.getDescription());
+
         String value;
         if (entry.getValue() == null)
             value = "No value";
         else
             value = Integer.toString(entry.getValue());
-        valueLabel.setText(value);
+        holder.getValueLabel().setText(value);
 
-//        ImageView imageView = (ImageView) entryView.findViewById(R.id.icon);
-//        // change the icon for Windows and iPhone
-//        String s = values[position];
-//        if (s.startsWith("iPhone")) {
-//            imageView.setImageResource(R.drawable.no);
-//        } else {
-//            imageView.setImageResource(R.drawable.ok);
-//        }
+        // FIXME
+        // ImageView imageView = (ImageView) entryView.findViewById(R.id.icon);
+        // // change the icon for Windows and iPhone
+        // String s = values[position];
+        // if (s.startsWith("iPhone")) {
+        //     imageView.setImageResource(R.drawable.no);
+        // } else {
+        //     imageView.setImageResource(R.drawable.ok);
+        // }
+    }
 
-        return entryView;
+
+    @Override
+    public int getItemCount()
+    {
+        return entries.getEntries().size();
     }
 
 }

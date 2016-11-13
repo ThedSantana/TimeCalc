@@ -10,8 +10,11 @@
 * Update topmost label with entry count
 * Delete entry when clicked
 
-- Figure out how to swipe list items to delete them
-    - Checkout RecyclerView, see https://developer.android.com/training/material/lists-cards.html
+> Figure out how to swipe list items to delete them
+    * Checkout RecyclerView, see https://developer.android.com/training/material/lists-cards.html
+    - See ItemTouchHelper for swiping items
+    - Clicking items - maybe something simpler is available?
+        - http://stackoverflow.com/questions/24471109/recyclerview-onclick/26196831#26196831
     - Maybe some of this is relevant for text editing within items: http://stackoverflow.com/questions/31844373/saving-edittext-content-in-recyclerview
 
 - Consider using JSON (Gson) for data storage (simplifies serialization) - or any alternatives?

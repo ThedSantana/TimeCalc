@@ -3,12 +3,12 @@ package com.example.clindeqeuist.timecalculator;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.clindeqeuist.timecalculator.adapters.EntryCollectionAdapter;
@@ -32,19 +32,25 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ListView listView = (ListView) findViewById(R.id.list);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
+        recyclerView.setHasFixedSize(true);
         entries.loadEntries(ENTRIES_FILENAME, getApplicationContext());
-        entriesAdapter = new EntryCollectionAdapter(listView.getContext(), entries);
-        listView.setAdapter(entriesAdapter);
+        entriesAdapter = new EntryCollectionAdapter(recyclerView.getContext(), entries);
+        recyclerView.setAdapter(entriesAdapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                removeEntry(position);
-            }
-        });
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(itemDecoration);
+
+        // FIXME: Items should be removed by swiping them off screen
+//        recyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+//        {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+//            {
+//                removeEntry(position);
+//            }
+//        });
 
         updateResultView();
     }
@@ -99,14 +105,14 @@ public class MainActivity extends AppCompatActivity
 
     private void addNewEntry()
     {
-        int value = entriesAdapter.getCount() + 1;
+        int value = entriesAdapter.getItemCount() + 1;
         String description = "Entry " + Integer.toString(value);
 
         entries.getEntries().add(new Entry(description, value));
         saveEntriesAndNotifyChanged();
 
-        ListView listView = (ListView) findViewById(R.id.list);
-        listView.smoothScrollToPosition(entries.getEntries().size() - 1);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
+        recyclerView.smoothScrollToPosition(entries.getEntries().size() - 1);
     }
 
 
