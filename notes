@@ -11,5 +11,7 @@
 * Delete entry when clicked
 
 - Figure out how to swipe list items to delete them
+    - Checkout RecyclerView, see https://developer.android.com/training/material/lists-cards.html
+    - Maybe some of this is relevant for text editing within items: http://stackoverflow.com/questions/31844373/saving-edittext-content-in-recyclerview
 
 - Consider using JSON (Gson) for data storage (simplifies serialization) - or any alternatives?
