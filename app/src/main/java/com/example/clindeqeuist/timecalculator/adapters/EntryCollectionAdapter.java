@@ -15,14 +15,12 @@ import com.example.clindeqeuist.timecalculator.model.EntryCollection;
 public class EntryCollectionAdapter extends RecyclerView.Adapter<EntryViewHolder>
 {
 
-    private Context context;
     private EntryCollection entries;
     private LayoutInflater inflater;
 
 
     public EntryCollectionAdapter(Context context, EntryCollection entries)
     {
-        this.context = context;
         this.entries = entries;
 
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
