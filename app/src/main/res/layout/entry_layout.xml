@@ -7,7 +7,8 @@
               android:minHeight="?android:attr/listPreferredItemHeight"
               android:orientation="horizontal"
               android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-              android:paddingStart="?android:attr/listPreferredItemPaddingStart">
+              android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+              android:background="?android:attr/colorBackground">
 
     <ImageButton
         android:id="@+id/operator_button"
