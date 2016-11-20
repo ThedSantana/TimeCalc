@@ -20,7 +20,7 @@
     - Maybe some of this is relevant for text editing within items: http://stackoverflow.com/questions/31844373/saving-edittext-content-in-recyclerview
     - Optimize which views are invalidated when entries change
 
-- Consider using JSON (Gson) for data storage (simplifies serialization) - or any alternatives?
+* Consider using JSON (Gson) for data storage (simplifies serialization)
 
 * Saving and restoring should only be performed when necessary, see lifetime diagram on
   https://developer.android.com/reference/android/app/Activity.html
