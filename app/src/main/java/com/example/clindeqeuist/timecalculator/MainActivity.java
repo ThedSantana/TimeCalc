@@ -38,9 +38,10 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        entries.loadEntries(ENTRIES_FILENAME, getApplicationContext());
+
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
-        entries.loadEntries(ENTRIES_FILENAME, getApplicationContext());
         entriesAdapter = new EntryCollectionAdapter(recyclerView.getContext(), entries);
         recyclerView.setAdapter(entriesAdapter);
 
@@ -60,7 +61,6 @@ public class MainActivity extends AppCompatActivity
                 int toPosition = target.getAdapterPosition();
 
                 Collections.swap(entries.getEntries(), fromPosition, toPosition);
-                entries.saveEntries(ENTRIES_FILENAME, getApplicationContext());
                 entriesAdapter.notifyItemMoved(fromPosition, toPosition);
 
                 updateResultView();
@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity
                 int position = viewHolder.getAdapterPosition();
 
                 entries.getEntries().remove(position);
-                entries.saveEntries(ENTRIES_FILENAME, getApplicationContext());
                 entriesAdapter.notifyItemRemoved(position);
 
                 updateResultView();
@@ -111,6 +110,26 @@ public class MainActivity extends AppCompatActivity
         recyclerView.addItemDecoration(itemDecoration);
 
         updateResultView();
+    }
+
+
+    @Override
+    protected void onRestart()
+    {
+        super.onRestart();
+
+        entries.loadEntries(ENTRIES_FILENAME, getApplicationContext());
+        entriesAdapter.notifyDataSetChanged();
+        updateResultView();
+    }
+
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+
+        entries.saveEntries(ENTRIES_FILENAME, getApplicationContext());
     }
 
 
@@ -154,7 +173,8 @@ public class MainActivity extends AppCompatActivity
     private void clearEntries()
     {
         entries.getEntries().clear();
-        saveEntriesAndNotifyChanged();
+        entriesAdapter.notifyDataSetChanged();
+        updateResultView();
 
         Snackbar.make(findViewById(R.id.activity_main), "Entries cleared", Snackbar.LENGTH_SHORT)
                 .show();
@@ -163,22 +183,17 @@ public class MainActivity extends AppCompatActivity
 
     private void addNewEntry()
     {
-        int value = entriesAdapter.getItemCount() + 1;
+        int position = entriesAdapter.getItemCount();
+
+        int value = position + 1;
         String description = "Entry " + Integer.toString(value);
 
         entries.getEntries().add(new Entry(description, value));
-        saveEntriesAndNotifyChanged();
+        entriesAdapter.notifyItemInserted(position);
+        updateResultView();
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
-        recyclerView.smoothScrollToPosition(entries.getEntries().size() - 1);
-    }
-
-
-    private void saveEntriesAndNotifyChanged()
-    {
-        entries.saveEntries(ENTRIES_FILENAME, getApplicationContext());
-        entriesAdapter.notifyDataSetChanged();
-        updateResultView();
+        recyclerView.smoothScrollToPosition(position);
     }
 
 

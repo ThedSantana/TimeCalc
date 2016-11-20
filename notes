@@ -21,5 +21,11 @@
     - Optimize which views are invalidated when entries change
 
 - Consider using JSON (Gson) for data storage (simplifies serialization) - or any alternatives?
-    - Saving and restoring should only be performed when necessary, see lifetime diagram on
-      https://developer.android.com/reference/android/app/Activity.html
+
+* Saving and restoring should only be performed when necessary, see lifetime diagram on
+  https://developer.android.com/reference/android/app/Activity.html
+    * Initial setup should happen in onCreate (adapter etc.)
+    * Restoring should either happen
+        \ in onStart, or
+        * in both onCreate and onRestart
+    * Saving should happen in onPause
