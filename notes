@@ -1,14 +1,7 @@
 
-* Add menu action for clearing list
-* Use proper add icon for floating action button
-
-* Look into creating a custom layout for list view items
-* Look into custom adapter for list view
-
-* Refactor EntryCollection to use Entry for items
-
-* Update topmost label with entry count
-* Delete entry when clicked
+* Clean up setup of the item touch helper
+- Activity should register as adapter data observer for updating the result
+    - use registerAdapterDataObserver(RecyclerView.AdapterDataObserver observer)
 
 > Figure out how to swipe list items to delete them
     * Checkout RecyclerView, see https://developer.android.com/training/material/lists-cards.html
@@ -18,14 +11,11 @@
     - Clicking items - maybe something simpler is available?
         - http://stackoverflow.com/questions/24471109/recyclerview-onclick/26196831#26196831
     - Maybe some of this is relevant for text editing within items: http://stackoverflow.com/questions/31844373/saving-edittext-content-in-recyclerview
-    - Optimize which views are invalidated when entries change
 
 * Consider using JSON (Gson) for data storage (simplifies serialization)
 
 * Saving and restoring should only be performed when necessary, see lifetime diagram on
   https://developer.android.com/reference/android/app/Activity.html
     * Initial setup should happen in onCreate (adapter etc.)
-    * Restoring should either happen
-        \ in onStart, or
-        * in both onCreate and onRestart
+    * Restoring should happen in both onCreate and onRestart
     * Saving should happen in onPause

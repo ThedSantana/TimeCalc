@@ -12,7 +12,10 @@ import com.example.clindeqeuist.timecalculator.R;
 import com.example.clindeqeuist.timecalculator.model.Entry;
 import com.example.clindeqeuist.timecalculator.model.EntryCollection;
 
+import java.util.Collections;
+
 public class EntryCollectionAdapter extends RecyclerView.Adapter<EntryViewHolder>
+                                    implements ItemTouchHandler
 {
 
     private EntryCollection entries;
@@ -69,6 +72,22 @@ public class EntryCollectionAdapter extends RecyclerView.Adapter<EntryViewHolder
     public int getItemCount()
     {
         return entries.getEntries().size();
+    }
+
+
+    @Override
+    public void onItemMove(int fromPosition, int toPosition)
+    {
+        Collections.swap(entries.getEntries(), fromPosition, toPosition);
+        notifyItemMoved(fromPosition, toPosition);
+    }
+
+
+    @Override
+    public void onItemDismiss(int position)
+    {
+        entries.getEntries().remove(position);
+        notifyItemRemoved(position);
     }
 
 }
